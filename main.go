@@ -35,8 +35,7 @@ func main() {
 	}
 
 	db.AutoMigrate(&Address{}, &Store{}, &Product{})
-
-	db.Create(&Product{
+	p1 := Product{
 		Name:     "PUBG",
 		Version:  "2.1",
 		Category: "game",
@@ -62,6 +61,14 @@ func main() {
 				},
 			},
 		},
+	}
+
+	db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(&p1).Error; err != nil {
+			return err
+		}
+
+		return nil
 	})
 
 }
