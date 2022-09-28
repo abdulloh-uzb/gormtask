@@ -65,6 +65,7 @@ func main() {
 
 	db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&p1).Error; err != nil {
+			tx.Rollback()
 			return err
 		}
 
